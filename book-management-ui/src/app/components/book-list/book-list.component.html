@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="header">
+    <h1>Book Management</h1>
+    <button class="btn btn-primary" (click)="onAdd()">+ Add Book</button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+
+  <div *ngIf="books.length === 0 && !errorMessage" class="empty-state">
+    No books found. Add one to get started!
+  </div>
+
+  <table *ngIf="books.length > 0" class="book-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Publication Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.publicationDate | date: 'mediumDate' }}</td>
+        <td class="actions-cell">
+          <button class="btn btn-edit" (click)="onEdit(book)">Edit</button>
+          <button class="btn btn-delete" (click)="onDelete(book)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

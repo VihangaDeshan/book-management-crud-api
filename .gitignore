@@ -1,0 +1,108 @@
+# ============================================================
+# ASP.NET Core / .NET
+# ============================================================
+
+## Build outputs
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio files
+.vs/
+*.user
+*.suo
+*.userprefs
+*.userosscache
+*.sln.docstates
+*.pidb
+*.booproj
+
+## NuGet packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Publish output
+**/publish/
+**/PublishProfiles/
+
+## dotnet test / coverage
+coverage*/
+TestResults/
+*.trx
+*.coveragexml
+*.coverage
+
+## Secrets & config overrides
+# appsettings.Development.json is intentionally tracked (no secrets here)
+appsettings.Local.json
+**/secrets.json
+
+## Entity Framework migrations snapshot generation temp
+*.ef.json
+
+# ============================================================
+# Angular / Node
+# ============================================================
+
+## Dependencies
+node_modules/
+.npm/
+.yarn/
+
+## Angular build output
+dist/
+.angular/
+tmp/
+out-tsc/
+
+## Angular cache
+.angular/cache
+
+## Environment files — keep .example, ignore real ones
+src/environments/environment.ts
+src/environments/environment.prod.ts
+
+## Coverage
+coverage/
+.nyc_output/
+
+## Package lock files (keep one; ignore the other)
+# Uncomment the one you do NOT use:
+# package-lock.json
+# yarn.lock
+
+# ============================================================
+# IDE / OS
+# ============================================================
+
+## JetBrains Rider / WebStorm / IntelliJ
+.idea/
+*.iml
+
+## VS Code (keep shared settings, ignore personal)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## Linux
+*~

@@ -4,9 +4,28 @@
     <button class="btn btn-primary" (click)="onAdd()">+ Add Book</button>
   </div>
 
-  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <!-- Toast notification -->
+  <div *ngIf="successMessage" class="toast toast-success" (click)="dismissToast()">
+    &#10003; {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="toast toast-error" (click)="dismissToast()">
+    &#10007; {{ errorMessage }}
+  </div>
 
-  <div *ngIf="books.length === 0 && !errorMessage" class="empty-state">
+  <!-- Delete Confirmation -->
+  <div *ngIf="bookToDelete" class="modal-overlay" (click)="cancelDelete()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()">
+      <h3>Confirm Delete</h3>
+      <p>Are you sure you want to delete "<strong>{{ bookToDelete.title }}</strong>"?</p>
+      <div class="dialog-actions">
+        <button class="btn btn-cancel" (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-confirm-delete" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="empty-state">Loading books...</div>
+  <div *ngIf="!loading && books.length === 0 && !errorMessage" class="empty-state">
     No books found. Add one to get started!
   </div>
 

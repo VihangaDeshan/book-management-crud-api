@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(AngularOrigin, policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -22,7 +22,7 @@ builder.Services.AddControllers();
 // ── Build ─────────────────────────────────────────────────────────────────────
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Commented out for development (HTTP only)
 app.UseCors(AngularOrigin);
 app.UseAuthorization();
 app.MapControllers();

@@ -1,7 +1,13 @@
 <div class="container">
   <h1>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h1>
 
-  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <!-- Toast notification -->
+  @if (successMessage) {
+    <div class="toast toast-success">&#10003; {{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="toast toast-error">&#10007; {{ errorMessage }}</div>
+  }
 
   <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" novalidate>
 
@@ -15,10 +21,12 @@
         [class.invalid]="f['title'].invalid && f['title'].touched"
         placeholder="e.g. The Great Gatsby"
       />
-      <div class="error-msg" *ngIf="f['title'].invalid && f['title'].touched">
-        <span *ngIf="f['title'].errors?.['required']">Title is required.</span>
-        <span *ngIf="f['title'].errors?.['maxlength']">Title must be 200 characters or fewer.</span>
-      </div>
+      @if (f['title'].invalid && f['title'].touched) {
+        <div class="error-msg">
+          @if (f['title'].errors?.['required']) { <span>Title is required.</span> }
+          @if (f['title'].errors?.['maxlength']) { <span>Title must be 200 characters or fewer.</span> }
+        </div>
+      }
     </div>
 
     <!-- Author -->
@@ -31,10 +39,12 @@
         [class.invalid]="f['author'].invalid && f['author'].touched"
         placeholder="e.g. F. Scott Fitzgerald"
       />
-      <div class="error-msg" *ngIf="f['author'].invalid && f['author'].touched">
-        <span *ngIf="f['author'].errors?.['required']">Author is required.</span>
-        <span *ngIf="f['author'].errors?.['maxlength']">Author must be 150 characters or fewer.</span>
-      </div>
+      @if (f['author'].invalid && f['author'].touched) {
+        <div class="error-msg">
+          @if (f['author'].errors?.['required']) { <span>Author is required.</span> }
+          @if (f['author'].errors?.['maxlength']) { <span>Author must be 150 characters or fewer.</span> }
+        </div>
+      }
     </div>
 
     <!-- ISBN -->
@@ -47,10 +57,12 @@
         [class.invalid]="f['isbn'].invalid && f['isbn'].touched"
         placeholder="e.g. 9780743273565 (ISBN-13) or 0743273567 (ISBN-10)"
       />
-      <div class="error-msg" *ngIf="f['isbn'].invalid && f['isbn'].touched">
-        <span *ngIf="f['isbn'].errors?.['required']">ISBN is required.</span>
-        <span *ngIf="f['isbn'].errors?.['pattern']">Must be a valid 10-digit (ISBN-10) or 13-digit (ISBN-13) number. No hyphens.</span>
-      </div>
+      @if (f['isbn'].invalid && f['isbn'].touched) {
+        <div class="error-msg">
+          @if (f['isbn'].errors?.['required']) { <span>ISBN is required.</span> }
+          @if (f['isbn'].errors?.['pattern']) { <span>Must be a valid 10-digit (ISBN-10) or 13-digit (ISBN-13) number. No hyphens.</span> }
+        </div>
+      }
     </div>
 
     <!-- Publication Date -->
@@ -62,9 +74,11 @@
         formControlName="publicationDate"
         [class.invalid]="f['publicationDate'].invalid && f['publicationDate'].touched"
       />
-      <div class="error-msg" *ngIf="f['publicationDate'].invalid && f['publicationDate'].touched">
-        <span *ngIf="f['publicationDate'].errors?.['required']">Publication date is required.</span>
-      </div>
+      @if (f['publicationDate'].invalid && f['publicationDate'].touched) {
+        <div class="error-msg">
+          @if (f['publicationDate'].errors?.['required']) { <span>Publication date is required.</span> }
+        </div>
+      }
     </div>
 
     <!-- Actions -->

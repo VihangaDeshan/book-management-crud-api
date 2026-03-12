@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReactiveFormsModule,
@@ -12,16 +11,17 @@ import { BookService } from '../../services/book.service';
 @Component({
   selector: 'app-book-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.css'
 })
-export class BookFormComponent implements OnInit {
+export class BookFormComponent implements OnInit, OnDestroy {
   bookForm!: FormGroup;
   isEditMode = false;
   bookId: number | null = null;
   errorMessage = '';
   successMessage = '';
+  private navTimer: any;
 
   constructor(
     private fb: FormBuilder,
@@ -29,6 +29,10 @@ export class BookFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {}
+
+  ngOnDestroy(): void {
+    clearTimeout(this.navTimer);
+  }
 
   ngOnInit(): void {
     this.bookForm = this.fb.group({
@@ -80,12 +84,18 @@ export class BookFormComponent implements OnInit {
 
     if (this.isEditMode && this.bookId !== null) {
       this.bookService.update(this.bookId, { id: this.bookId, ...payload }).subscribe({
-        next: () => this.router.navigate(['/books']),
+        next: () => {
+          this.successMessage = 'Book updated successfully!';
+          this.navTimer = setTimeout(() => this.router.navigate(['/books'], { state: { toast: 'Book updated successfully!' } }), 1500);
+        },
         error: () => (this.errorMessage = 'Failed to update book.')
       });
     } else {
       this.bookService.create(payload).subscribe({
-        next: () => this.router.navigate(['/books']),
+        next: () => {
+          this.successMessage = 'Book added successfully!';
+          this.navTimer = setTimeout(() => this.router.navigate(['/books'], { state: { toast: 'Book added successfully!' } }), 1500);
+        },
         error: () => (this.errorMessage = 'Failed to create book.')
       });
     }

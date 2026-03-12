@@ -1,32 +1,34 @@
+using BookManagementApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ── CORS ──────────────────────────────────────────────────────────────────────
+const string AngularOrigin = "AllowAngularDevServer";
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
+builder.Services.AddCors(options =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    options.AddPolicy(AngularOrigin, policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
+// ── Services ──────────────────────────────────────────────────────────────────
+builder.Services.AddSingleton<IBookService, BookService>();
+builder.Services.AddControllers();
+
+// ── Build ─────────────────────────────────────────────────────────────────────
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseCors(AngularOrigin);
+app.UseAuthorization();
+app.MapControllers();
+
 app.Run();
+
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
